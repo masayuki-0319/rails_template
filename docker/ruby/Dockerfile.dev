@@ -4,7 +4,7 @@ ENV TZ Asia/Tokyo
 
 ENV BASE_PACKAGES="alpine-sdk build-base tzdata" \
     WEBPACKER_PACKAGES="python2 yarn nodejs-current nodejs-npm" \
-    BUILD_PACKAGE="mysql-client mysql-dev" \
+    DATABASE_PACKAGE="sqlite-dev mysql-client mysql-dev postgresql-dev" \
     FAVORITE_PACKAGE="less"
 
 RUN apk update && \
@@ -12,7 +12,7 @@ RUN apk update && \
     apk --update --no-cache add \
         ${BASE_PACKAGES} \
         ${WEBPACKER_PACKAGES} \
-        ${BUILD_PACKAGE} \
+        ${DATABASE_PACKAGE} \
         ${FAVORITE_PACKAGE}
 
 WORKDIR /app
