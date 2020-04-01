@@ -1,0 +1,22 @@
+default: &default
+  adapter: mysql2
+  charset: utf8mb4
+  collation: utf8mb4_bin
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("APP_DATABASE_HOST") { '127.0.0.1' } %>
+  port: <%= ENV.fetch("APP_DATABASE_PORT") { '3306' } %>
+  username: <%= ENV.fetch("APP_DATABASE_USERNAME") { 'root' } %>
+  password: <%= ENV.fetch("APP_DATABASE_PASSWORD") { 'pass' } %>
+
+development:
+  <<: *default
+  database: rails_template_development
+
+test:
+  <<: *default
+  database: rails_template_test
+
+production:
+  <<: *default
+  database: rails_template_production
