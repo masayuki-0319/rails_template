@@ -11,12 +11,12 @@ default: &default
 
 development:
   <<: *default
-  database: rails_template_development
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_development' } %>
 
 test:
   <<: *default
-  database: rails_template_test
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_test' } %>
 
 production:
   <<: *default
-  database: rails_template_production
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_production' } %>

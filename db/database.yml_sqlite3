@@ -5,12 +5,12 @@ default: &default
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_development' } %>
 
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_test' } %>
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_production' } %>
