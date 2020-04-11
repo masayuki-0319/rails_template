@@ -1,31 +1,39 @@
-FROM ruby:2.7.0-alpine3.10
-ENV LANG C.UTF-8
-ENV TZ Asia/Tokyo
+ARG RUBY_VERSION
+FROM ruby:$RUBY_VERSION
+
+ARG BUNDLER_VERSION
+ARG RAILS_VERSION
+
+ENV LANG C.UTF-8 \
+    TZ Asia/Tokyo
 
 ENV BASE_PACKAGES="alpine-sdk build-base tzdata" \
     WEBPACKER_PACKAGES="python2 yarn nodejs-current nodejs-npm" \
     DATABASE_PACKAGE="sqlite-dev mysql-client mysql-dev postgresql-dev" \
+    REFINERY_PACKAGE="imagemagick" \
     FAVORITE_PACKAGE="less"
-
 RUN apk update && \
     apk upgrade && \
     apk --update --no-cache add \
         ${BASE_PACKAGES} \
         ${WEBPACKER_PACKAGES} \
         ${DATABASE_PACKAGE} \
+        ${REFINERY_PACKAGE} \
         ${FAVORITE_PACKAGE}
 
 WORKDIR /app
 
-COPY Gemfile \
-     Gemfile.lock \
-     package.json \
-     yarn.lock \
-     /app/
-
-RUN bundle install --jobs=4
+RUN gem update --system && \
+    gem install bundler:$BUNDLER_VERSION && \
+    gem install rails:$RAILS_VERSION
 
 # 必要になり次第コメント解除
+# COPY Gemfile \
+#      Gemfile.lock \
+#      package.json \
+#      yarn.lock \
+#      /app/
+# RUN bundle install --jobs=4
 # RUN yarn install
 
 # https://github.com/bundler/bundler/issues/6154

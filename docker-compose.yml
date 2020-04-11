@@ -22,7 +22,7 @@ services:
   #   ports:
   #     - 5432:5432
   #   volumes:
-  #     - db_data:/var/lib/mysql
+  #     - db_data:/var/lib/postgresql/data
   #   env_file:
   #     - .env.dev
   #   stdin_open: true
@@ -31,6 +31,14 @@ services:
     build:
       context: .
       dockerfile: ./docker/ruby/Dockerfile.dev
+      args:
+        BUNDLER_VERSION: "2.1.4"
+        # default
+        RUBY_VERSION: "2.7.1-alpine3.11"
+        RAILS_VERSION: "6"
+        # For Refinery
+        # RUBY_VERSION: "2.6.6-alpine3.11"
+        # RAILS_VERSION: "5.1.7"
     # command: ash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - 3000:3000
