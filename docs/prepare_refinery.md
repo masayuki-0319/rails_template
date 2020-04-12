@@ -10,7 +10,6 @@ Ruby on Rails で作られた [Open Source Software]([OSS](https://ja.wikipedia.
 - [Getting Started \- Guides \- Refinery CMS](https://www.refinerycms.com/guides/getting-started)
 - [Rubyで動くCMS、「RefineryCMS」を動かしてみた話 \- ファーエンドテクノロジー株式会社](https://www.farend.co.jp/blog/2019/01/refinerycms/)
 
-
 ## 設定( 2020年4月1日現在 )
 ### バージョンの調整
 - docker-compose.yml 中の args を該当OSSと置換する。
@@ -27,7 +26,6 @@ $ gem install execjs refinerycms
 $ rails new . -m https://www.refinerycms.com/t/4.0.0
 $ rails new . -m https://www.refinerycms.com/t/edge
 ```
-
 
 ### 関連ファイルの調整
 #### 日本語化

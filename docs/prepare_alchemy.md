@@ -28,7 +28,6 @@ What's the name of your site's primary language? (DEFAULT: English)
 > `click enter key`
 ```
 
-
 ### 関連ファイルの調整
 
 ```ruby:routes.rb

@@ -4,7 +4,6 @@
 - [Spina CMS \- Ruby on Rails 6\+](https://www.spinacms.com/)
 - [Introduction](https://www.spinacms.com/guide/introduction)
 
-
 ## 設定
 ### 特記事項
 - DB は PostgreSQL
@@ -79,13 +78,13 @@ APP_DATABASE_NAME=rails_spina
 
 ### Spina のインストール
 
-```
+```bash:ash
 $ bundle add spina
 $ rails g spina:install
 > `all click enter`
 ```
 
-```ash:結果
+```bash:結果
 Restart your server and visit http://localhost:3000 in your browser!
 The admin backend is located at http://localhost:3000/admin.
 
@@ -94,7 +93,6 @@ Active theme   :  default
 User email     :  admin@domain.com
 User password  :  password
 ```
-
 
 ### アプリケーションを起動
 

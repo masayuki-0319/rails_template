@@ -11,6 +11,7 @@
   - $ cd `プロジェクト名`
 
 ## Git の初期化
+### 1: 直接操作
 1. 本リポジトリとの関係を削除
   - $ rm -rf .git
 2. 初期化実行
@@ -18,11 +19,17 @@
   - $ git add .
   - $ git commit -m "first commit"
 
+### 2: entrypoint_clone.sh を使用
+```bash:bash
+./docker/entrypoint_clone.sh
+```
+
 ## プロジェクトの生成
 ### 方法１: OSS を使用
 ./docs ディレクトリに存在する OSS の手順通りに設定してください。
 - Refinery
 - Alchemy
+- Spina
 
 ### 方法2: オリジナル
 #### 通常モード
@@ -32,7 +39,11 @@
 ### database.yml の調整
 `config`ディレクトリに SQLite、PostgreSQL、MySQL 用の database.yml を用意しているため、使用する DB に応じたファイルをご使用ください。
 
-# より便利にできそうな技術
+# 覚書
+## 残りOSS
+- [mastodon/config at master · tootsuite/mastodon](https://github.com/tootsuite/mastodon/tree/master/config)
+- [solidusio/solidus: 🛒Solidus, Rails eCommerce System](https://github.com/solidusio/solidus)
+## より便利にできそうな技術
 - RSpec の自動設定
 - Rubocop の自動設定
 - [PaaS入門　〜Heroku \+ wordpress〜 \- Qiita](https://qiita.com/fukazawashun/items/a8a9698d5cf781f87812)
