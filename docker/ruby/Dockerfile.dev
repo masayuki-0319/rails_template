@@ -1,9 +1,6 @@
 ARG RUBY_VERSION
 FROM ruby:$RUBY_VERSION
 
-ARG BUNDLER_VERSION
-ARG RAILS_VERSION
-
 ENV LANG C.UTF-8 \
     TZ Asia/Tokyo
 
@@ -11,6 +8,7 @@ ENV BASE_PACKAGES="alpine-sdk build-base tzdata" \
     WEBPACKER_PACKAGES="python2 yarn nodejs-current nodejs-npm" \
     DATABASE_PACKAGE="sqlite-dev mysql-client mysql-dev postgresql-dev" \
     REFINERY_PACKAGE="imagemagick" \
+    ALCHEMY_PACKAGE="imagemagick" \
     FAVORITE_PACKAGE="less"
 RUN apk update && \
     apk upgrade && \
@@ -19,10 +17,13 @@ RUN apk update && \
         ${WEBPACKER_PACKAGES} \
         ${DATABASE_PACKAGE} \
         ${REFINERY_PACKAGE} \
+        ${ALCHEMY_PACKAGE} \
         ${FAVORITE_PACKAGE}
 
 WORKDIR /app
 
+ARG BUNDLER_VERSION
+ARG RAILS_VERSION
 RUN gem update --system && \
     gem install bundler:$BUNDLER_VERSION && \
     gem install rails:$RAILS_VERSION
