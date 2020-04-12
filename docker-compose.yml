@@ -42,6 +42,9 @@ services:
         # For Alchemy
         # RUBY_VERSION: "2.6.6-alpine3.11"
         # RAILS_VERSION: "4.2.11"
+        # For Spina
+        # RUBY_VERSION: "2.6.6-alpine3.11"
+        # RAILS_VERSION: "6"
     # command: ash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - 3000:3000
