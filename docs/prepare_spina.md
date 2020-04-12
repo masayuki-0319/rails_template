@@ -1,6 +1,6 @@
 # RefineryCMS 初期設定
 ## 概要
-- [http://www\.spinacms\.com](https://github.com/SpinaCMS/Spina)
+- [リポジトリ | SpinaCMS](https://github.com/SpinaCMS/Spina)
 - [Spina CMS \- Ruby on Rails 6\+](https://www.spinacms.com/)
 - [Introduction](https://www.spinacms.com/guide/introduction)
 

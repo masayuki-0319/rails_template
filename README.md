@@ -25,11 +25,14 @@
 ```
 
 ## プロジェクトの生成
+- [小さく薄くrails newする\(ViewやJSが必要ない場合\) \- Qiita](https://qiita.com/shifumin/items/f4f4ea68d9963dbe9ca2)
+- [【Rails】generate コマンドで生成されるファイルをconfig\.generatorsで設定する \| RemoNote](https://remonote.jp/rails-config-generators)
+
 ### 方法１: OSS を使用
 ./docs ディレクトリに存在する OSS の手順通りに設定してください。
-- Refinery
-- Alchemy
-- Spina
+- [RefineryCMS](https://github.com/refinery/
+- [AlchemyCMS](https://github.com/AlchemyCMS/alchemy_cms)
+- [SpinaCMS](https://github.com/SpinaCMS/Spina)
 
 ### 方法2: オリジナル
 #### 通常モード
