@@ -1,10 +1,11 @@
 # ==========================
 # Reference
 # https://railsguides.jp/rails_application_templates.html
+# https://github.com/rails/rails/tree/master/railties/lib/rails/generators
 
 
 # ==========================
-# Dubug for this file.
+# Dubug for this file
 # $ gem install pry-byebug
 # require 'pry-byebug'
 
@@ -30,7 +31,7 @@ end
 # Gem settings
 
 # --------------------------
-## For debug & test gems
+## Debug & Test gems
 gem_group :test, :development do
   gem "pry-rails"
   gem "pry-byebug"
@@ -42,7 +43,7 @@ gem_group :test, :development do
 end
 
 # --------------------------
-# For favorite gems
+# Favorite gems
 gem "seed-fu"
 
 
@@ -111,7 +112,7 @@ case ask("Choose View template:", limited_to: %w[slim halm erb none])
 when "slim"
   gem "slim-rails"
 
-  remove_file "app/views/layouts/application.html.erb"
+  remove_file("app/views/layouts/application.html.erb")
   get_remote("app/views/layouts/application.html.slim")
 
   slim_application_setting = <<-EOF
@@ -133,10 +134,10 @@ end
 gem_group :test, :development do
   case ask("Choose rubocop template:", limited_to: %w[plain airbnb onkcop none])
   when "plain"
-    # Base for other templates. (https://github.com/rubocop-hq/rubocop)
+    # Base gem (https://github.com/rubocop-hq/rubocop)
     gem "rubocop", require: false
   when "airbnb"
-    # Airbnb specific analysis for RuboCop. (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
+    # Airbnb specific analysis for RuboCop (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
     gem "rubocop-airbnb", require: false
 
     run "cat << EOF >> ./.rubocop_airbnb.yml
@@ -171,7 +172,6 @@ end
 # # --------------------------
 # # RSpec
 run "bundle install -j4"
-
 generate "rspec:install"
 
 run "rm -rf test"
@@ -181,18 +181,16 @@ run "cat << EOF > ./.rspec
 --format documentation
 EOF"
 
-## For fast run rspec.
+## For enable fast run rspec.
 run "bundle exec spring binstub rspec"
 
-## For enabled ./spec/support
+## For enable ./spec/support
 uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
-
 run "cat << EOF > ./spec/support/factory_bot.rb
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 EOF"
-
 run "cat << EOF > ./spec/support/database_rewinder.rb
 RSpec.configure do |config|
   config.before(:suite) do
@@ -209,7 +207,7 @@ EOF"
 
 
 # ==================================================
-# Add file for .gitignore
+# Use if add file to gitignore
 # run "cat << EOF >> .gitignore
 # EOF"
 
