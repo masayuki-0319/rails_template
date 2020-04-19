@@ -42,6 +42,26 @@
 ### database.yml の調整
 `config`ディレクトリに SQLite、PostgreSQL、MySQL 用の database.yml を用意しているため、使用する DB に応じたファイルをご使用ください。
 
+## RSpec 設定
+```bash:bash
+# spec 生成コマンド
+$ rails g rspec:model user
+$ rails g rspec:job users
+$ rails g rspec:view users
+$ rails g rspec:helper users
+$ rails g rspec:system user_registration
+$ rails g rspec:request users
+```
+
+```bash:bash
+# 一部をテストする場合
+$ bin/rspec spec/models/user_spec.rb:12
+
+# 全体をテストする場合
+$ bundle exec rspec
+```
+
+
 # 覚書
 ## 残りOSS
 - [mastodon/config at master · tootsuite/mastodon](https://github.com/tootsuite/mastodon/tree/master/config)

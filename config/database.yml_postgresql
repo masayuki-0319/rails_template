@@ -8,12 +8,12 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_development' } %>
+  database: <%= ENV["APP_DATABASE_ORIGINAL_NAME"] %>_development
 
 test:
   <<: *default
-  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_test' } %>
+  database: <%= ENV["APP_DATABASE_ORIGINAL_NAME"] %>_test
 
 production:
   <<: *default
-  database: <%= ENV.fetch("APP_DATABASE_NAME") { 'rails_template_production' } %>
+  database: <%= ENV["APP_DATABASE_ORIGINAL_NAME"] %>_production
