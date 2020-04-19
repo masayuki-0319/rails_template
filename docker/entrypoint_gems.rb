@@ -71,24 +71,24 @@ end
 # --------------------------
 # Base setting
 base_setting = <<-EOF
-  config.time_zone = "Asia/Tokyo"
-  config.active_record.default_timezone = :local
-  I18n.enforce_available_locales = false
-  config.i18n.default_locale = :ja
-  config.generators do |g|
-    g.helper false
-    g.stylesheets false
-    g.javascripts false
-    g.test_framework :rspec,
-                     fixtures: true,
-                     routing_specs: false,
-                     view_specs: false,
-                     helper_specs: false,
-                     controller_specs: false,
-                     request_specs: true,
-    g.fixture_replacement :factory_bot, dir: "spec/factories"
-  end
-  EOF
+config.time_zone = "Asia/Tokyo"
+config.active_record.default_timezone = :local
+I18n.enforce_available_locales = false
+config.i18n.default_locale = :ja
+config.generators do |g|
+  g.helper false
+  g.stylesheets false
+  g.javascripts false
+  g.test_framework :rspec,
+                    fixtures: true,
+                    routing_specs: false,
+                    view_specs: false,
+                    helper_specs: false,
+                    controller_specs: false,
+                    request_specs: true
+  g.fixture_replacement :factory_bot, dir: "spec/factories"
+end
+EOF
 environment base_setting
 
 # --------------------------
@@ -110,12 +110,13 @@ environment bullet_application_setting, env: "development"
 case ask("Choose View template:", limited_to: %w[slim halm erb none])
 when "slim"
   gem "slim-rails"
+
   remove_file "app/views/layouts/application.html.erb"
-  # get "#{repo_url}/app/views/layouts/application.html.slim", "app/views/layouts/application.html.slim"
+  get_remote("app/views/layouts/application.html.slim")
+
   slim_application_setting = <<-EOF
 config.generators.template_engine = :slim
 EOF
-
   environment slim_application_setting
 when "halm"
   # TODO: haml_setting
@@ -150,13 +151,13 @@ AllCops:
 #  TargetRailsVersion:
 
   Exclude:
-    - "bin/**/*"
-    - "config/**/*"
-    - "db/**/*"
-    - "lib/**/*"
-    - "node_modules/**/*"
-    - "spec/**/*"
-    - "vendor/**/*"
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'node_modules/**/*'
+    - 'spec/**/*'
+    - 'vendor/**/*'
 EOF"
   when "Onkcop"
     # TODO: onkcop setting
@@ -168,53 +169,53 @@ EOF"
 end
 
 
-# --------------------------
-# RSpec
-generate "rspec:install"
+# # --------------------------
+# # RSpec
+# after_bundle do
+#   generate "rspec:install"
 
-run "rm -rf test"
+#   run "rm -rf test"
 
-run "cat << EOF > ./.rspec
---require spec_helper
---format documentation
-EOF"
+#   run "cat << EOF > ./.rspec
+#   --require spec_helper
+#   --format documentation
+#   EOF"
 
-## For fast run rspec.
-run "bundle exec spring binstub rspec"
+#   ## For fast run rspec.
+#   run "bundle exec spring binstub rspec"
 
-## For enabled ./spec/support
-uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
+#   ## For enabled ./spec/support
+#   uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
 
-run "cat << EOF > ./spec/support/factory_bot.rb
-RSpec.configure do |config|
-  config.include FactoryBot::Syntax::Methods
-end
-EOF"
+#   run "cat << EOF > ./spec/support/factory_bot.rb
+#   RSpec.configure do |config|
+#     config.include FactoryBot::Syntax::Methods
+#   end
+#   EOF"
 
-run "cat << EOF > ./spec/support/database_rewinder.rb
-RSpec.configure do |config|
-  config.before(:suite) do
-    DatabaseRewinder.clean_all
-    # or
-    # DatabaseRewinder.clean_with :any_arg_that_would_be_actually_ignored_anyway
-  end
+#   run "cat << EOF > ./spec/support/database_rewinder.rb
+#   RSpec.configure do |config|
+#     config.before(:suite) do
+#       DatabaseRewinder.clean_all
+#       # or
+#       # DatabaseRewinder.clean_with :any_arg_that_would_be_actually_ignored_anyway
+#     end
 
-  config.after(:each) do
-    DatabaseRewinder.clean
-  end
-end
-EOF"
+#     config.after(:each) do
+#       DatabaseRewinder.clean
+#     end
+#   end
+#   EOF"
+# end
 
-# Add file for .gitignore
-# ==================================================
-run "cat << EOF > .gitignore
-.rubocop.yml
-.rubocop_airbnb.yml
-EOF"
+# # ==================================================
+# # Add file for .gitignore
+# # run "cat << EOF >> .gitignore
+# # EOF"
 
 
-# ==========================
-if yes?("run migrate ?")
-  rails_command "db:create"
-  rails_command "db:migrate"
-end
+# # ==========================
+# if yes?("run migrate ?")
+#   rails_command "db:create"
+#   rails_command "db:migrate"
+# end
