@@ -54,10 +54,10 @@ $ bundle exec rspec
 ```
 
 ## Want use OSS
-./docs ディレクトリに存在する OSS の手順通りに設定してください。
+./docs ディレクトリに存在する OSS をご参照ください。
 一部 README と重複しているため、適宜読み替えて設定願います。
 
-- OSS oficial Sites
+- OSS repositories
   - [RefineryCMS](https://github.com/refinery/)
   - [AlchemyCMS](https://github.com/AlchemyCMS/alchemy_cms)
   - [SpinaCMS](https://github.com/SpinaCMS/Spina)
