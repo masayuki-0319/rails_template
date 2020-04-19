@@ -34,7 +34,7 @@ $ rails new #{project_name} \
 
 
 # Others
-## RSpec 使用方法
+## RSpec Usage
 ```bash:bash
 # spec 生成コマンド（ e.g. user 関係の場合）
 $ rails g rspec:model user
@@ -53,12 +53,12 @@ $ bin/rspec spec/models/user_spec.rb:12
 $ bundle exec rspec
 ```
 
-## OSS を使用したい場合
+## Want use OSS
 ./docs ディレクトリに存在する OSS の手順通りに設定してください。
 一部 README と重複しているため、適宜読み替えて設定願います。
 
 - OSS oficial Sites
-  - [RefineryCMS](https://github.com/refinery/
+  - [RefineryCMS](https://github.com/refinery/)
   - [AlchemyCMS](https://github.com/AlchemyCMS/alchemy_cms)
   - [SpinaCMS](https://github.com/SpinaCMS/Spina)
 
