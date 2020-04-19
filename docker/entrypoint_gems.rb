@@ -161,7 +161,7 @@ AllCops:
 EOF"
   when "Onkcop"
     # TODO: onkcop setting
-    # Set by japanese programmer(https://github.com/onk/onkcop)
+    # Create by japanese programmer(https://github.com/onk/onkcop)
     gem "onkcop", require: false
   when "None"
     puts "Non setting rubocop"
