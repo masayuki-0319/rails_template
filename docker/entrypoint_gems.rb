@@ -1,47 +1,75 @@
-# References
+# ==========================
+# Reference
 # https://railsguides.jp/rails_application_templates.html
 
-# TODO: リモートからテンプレートをダウンロード
-# def get_remote(file_path)
-#   repo_base_url = "https://raw.githubusercontent.com/masayuki-0319/rails_template/master/"
-#   remote_file = repo_base_url + file_path
 
-#   get(remote_file, dest, force: true)
-#   replace_myapp(dest)
-# end
+# ==========================
+# Dubug for this file.
+# $ gem install pry-byebug
+# require 'pry-byebug'
 
-# gem settings
-#
 
-# Base
-gem "seed_fu"
+# ==========================
+# Setting helper methods
+REPO_BASE_URL = "https://raw.githubusercontent.com/masayuki-0319/rails_template/master/"
 
+def replace_myapp(file)
+  gsub_file(file, /#{app_name}/, app_name, verbose: false)
+end
+
+def get_remote(file, dest = nil)
+  remote_file = REPO_BASE_URL + file
+  dest ||= file
+
+  get(remote_file, dest, force: true)
+  replace_myapp(dest)
+end
+
+
+# ==========================
+# Gem settings
+
+# --------------------------
+## For debug & test gems
 gem_group :test, :development do
-  # debug
   gem "pry-rails"
   gem "pry-byebug"
   gem "bullet"
-  # testing
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "database_rewinder"
   gem "spring-commands-rspec"
 end
 
+# --------------------------
+# For favorite gems
+gem "seed-fu"
 
+
+# ==========================
 # Database settings
-# TODO: .env.dev に環境変数追加
-# TODO: リモートの database.yml と置換
 case @builder.options.database
 when "mysql"
+  run "cat << EOF >> .env.dev
+MYSQL_ROOT_PASSWORD=pass
+EOF"
+  get_remote('config/database.yml_mysql', 'config/database.yml')
 when "postgresql"
+  run "cat << EOF >> .env.dev
+POSTGRES_USER=root
+POSTGRES_PASSWORD=pass
+EOF"
+  get_remote('config/database.yml_postgresql', 'config/database.yml')
 when "sqlite3"
 else
 end
 
 
+# ==========================
 # Application settings
-#
+
+# --------------------------
+# Base setting
 base_setting = <<-EOF
   config.time_zone = "Asia/Tokyo"
   config.active_record.default_timezone = :local
@@ -63,25 +91,8 @@ base_setting = <<-EOF
   EOF
 environment base_setting
 
-# View settings
-case ask("Choose View template:", limited_to: %w[slim halm erb none])
-when "slim"
-  gem "slim-rails"
-  remove_file "app/views/layouts/application.html.erb"
-  # get "#{repo_url}/app/views/layouts/application.html.slim", "app/views/layouts/application.html.slim"
-  slim_application_setting = <<-EOF
-  config.generators.template_engine = :slim
-  EOF
-
-  environment slim_application_setting
-when "halm"
-  # TODO: haml_setting
-  gem "haml-rails"
-when ["erb", "none"]
-  puts "No change view template"
-end
-
-# bullet_setting
+# --------------------------
+# Bullet setting
 bullet_application_setting = <<-EOF
 config.after_initialize do
   Bullet.enable = true
@@ -94,8 +105,30 @@ EOF
 environment bullet_application_setting, env: "development"
 
 
+# ==========================
+# View settings
+case ask("Choose View template:", limited_to: %w[slim halm erb none])
+when "slim"
+  gem "slim-rails"
+  remove_file "app/views/layouts/application.html.erb"
+  # get "#{repo_url}/app/views/layouts/application.html.slim", "app/views/layouts/application.html.slim"
+  slim_application_setting = <<-EOF
+config.generators.template_engine = :slim
+EOF
+
+  environment slim_application_setting
+when "halm"
+  # TODO: haml_setting
+  gem "haml-rails"
+when ["erb", "none"]
+  puts "No change view template"
+end
+
+
+# ==========================
 # Test settings
-## Rubocop
+# --------------------------
+# Rubocop
 gem_group :test, :development do
   case ask("Choose rubocop template:", limited_to: %w[Plain Airbnb Onkcop None])
   when "Plain"
@@ -104,39 +137,38 @@ gem_group :test, :development do
   when "Airbnb"
     # Airbnb specific analysis for RuboCop. (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
     gem "rubocop-airbnb", require: false
+
+    run "cat << EOF >> ./.rubocop_airbnb.yml
+require:
+  - rubocop-airbnb
+EOF"
+    run "cat << EOF > ./.rubocop.yml
+inherit_from:
+  - .rubocop_airbnb.yml
+AllCops:
+#  TargetRubyVersion:
+#  TargetRailsVersion:
+
+  Exclude:
+    - "bin/**/*"
+    - "config/**/*"
+    - "db/**/*"
+    - "lib/**/*"
+    - "node_modules/**/*"
+    - "spec/**/*"
+    - "vendor/**/*"
+EOF"
   when "Onkcop"
+    # TODO: onkcop setting
     # Set by japanese programmer(https://github.com/onk/onkcop)
     gem "onkcop", require: false
   when "None"
+    puts "Non setting rubocop"
   end
 end
 
-if gems["rubocop-airbnb"]
-  run "cat << EOF >> ./.rubocop_airbnb.yml
-  require:
-    - rubocop-airbnb
 
-  EOF"
-
-  run "cat << EOF > ./.rubocop.yml
-  inherit_from:
-    - .rubocop_airbnb.yml
-  AllCops:
-  #  TargetRubyVersion:
-  #  TargetRailsVersion:
-
-    Exclude:
-      - "bin/**/*"
-      - "config/**/*"
-      - "db/**/*"
-      - "lib/**/*"
-      - "node_modules/**/*"
-      - "spec/**/*"
-      - "vendor/**/*"
-  EOF"
-# TODO: onkcop setting
-end
-
+# --------------------------
 # RSpec
 generate "rspec:install"
 
@@ -173,31 +205,16 @@ RSpec.configure do |config|
 end
 EOF"
 
-# after_bundle do
-#   git :init
-#   git add: "."
-#   git commit: %Q{ -m "Initial commit" }
-# end
-
-# setting .gitignore
+# Add file for .gitignore
 # ==================================================
-# gitignore = <<-EOF
-# vendor/bundler
-# vendor/bundle
-# coverage
-# config/database.yml
-# public/uploads
-# .rubocop.yml
-# .DS_Store
-# Gemfile.lock.tags
-# tags
-# EOF
-# File.open(".gitignore", "a") do |file|
-#   file.write gitignore
-# end
+run "cat << EOF > .gitignore
+.rubocop.yml
+.rubocop_airbnb.yml
+EOF"
 
+
+# ==========================
 if yes?("run migrate ?")
   rails_command "db:create"
   rails_command "db:migrate"
-  # TODO: Rails version for < 4.x
 end
