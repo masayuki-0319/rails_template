@@ -119,10 +119,10 @@ config.generators.template_engine = :slim
 EOF
   environment slim_application_setting
 when "halm"
-  # TODO: haml_setting
+  # TODO: haml setting
   gem "haml-rails"
 when ["erb", "none"]
-  puts "No change view template"
+  puts "INFO: Use default view template ( erb )."
 end
 
 
@@ -131,11 +131,11 @@ end
 # --------------------------
 # Rubocop
 gem_group :test, :development do
-  case ask("Choose rubocop template:", limited_to: %w[Plain Airbnb Onkcop None])
-  when "Plain"
+  case ask("Choose rubocop template:", limited_to: %w[plain airbnb onkcop none])
+  when "plain"
     # Base for other templates. (https://github.com/rubocop-hq/rubocop)
     gem "rubocop", require: false
-  when "Airbnb"
+  when "airbnb"
     # Airbnb specific analysis for RuboCop. (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
     gem "rubocop-airbnb", require: false
 
@@ -159,63 +159,63 @@ AllCops:
     - 'spec/**/*'
     - 'vendor/**/*'
 EOF"
-  when "Onkcop"
+  when "onkcop"
     # TODO: onkcop setting
     # Create by japanese programmer(https://github.com/onk/onkcop)
     gem "onkcop", require: false
-  when "None"
-    puts "Non setting rubocop"
+  when "none"
+    puts "INFO: No setting rubocop."
   end
 end
 
-
 # # --------------------------
 # # RSpec
-# after_bundle do
-#   generate "rspec:install"
+run "bundle install -j4"
 
-#   run "rm -rf test"
+generate "rspec:install"
 
-#   run "cat << EOF > ./.rspec
-#   --require spec_helper
-#   --format documentation
-#   EOF"
+run "rm -rf test"
 
-#   ## For fast run rspec.
-#   run "bundle exec spring binstub rspec"
+run "cat << EOF > ./.rspec
+--require spec_helper
+--format documentation
+EOF"
 
-#   ## For enabled ./spec/support
-#   uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
+## For fast run rspec.
+run "bundle exec spring binstub rspec"
 
-#   run "cat << EOF > ./spec/support/factory_bot.rb
-#   RSpec.configure do |config|
-#     config.include FactoryBot::Syntax::Methods
-#   end
-#   EOF"
+## For enabled ./spec/support
+uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
 
-#   run "cat << EOF > ./spec/support/database_rewinder.rb
-#   RSpec.configure do |config|
-#     config.before(:suite) do
-#       DatabaseRewinder.clean_all
-#       # or
-#       # DatabaseRewinder.clean_with :any_arg_that_would_be_actually_ignored_anyway
-#     end
+run "cat << EOF > ./spec/support/factory_bot.rb
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+EOF"
 
-#     config.after(:each) do
-#       DatabaseRewinder.clean
-#     end
-#   end
-#   EOF"
-# end
+run "cat << EOF > ./spec/support/database_rewinder.rb
+RSpec.configure do |config|
+  config.before(:suite) do
+    DatabaseRewinder.clean_all
+    # or
+    # DatabaseRewinder.clean_with :any_arg_that_would_be_actually_ignored_anyway
+  end
 
-# # ==================================================
-# # Add file for .gitignore
-# # run "cat << EOF >> .gitignore
-# # EOF"
+  config.after(:each) do
+    DatabaseRewinder.clean
+  end
+end
+EOF"
 
 
-# # ==========================
-# if yes?("run migrate ?")
-#   rails_command "db:create"
-#   rails_command "db:migrate"
-# end
+# ==================================================
+# Add file for .gitignore
+# run "cat << EOF >> .gitignore
+# EOF"
+
+
+# ==========================
+if yes?("run migrate ?")
+  rails_command "db:create"
+  rails_command "db:migrate"
+end
