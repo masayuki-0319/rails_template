@@ -25,6 +25,13 @@ $ docker-compose exec app ash
 # How to use
 
 ```bash
+# Use Docker
+$ rails new . \
+            -m https://raw.githubusercontent.com/masayuki-0319/rails_template/master/rails_template.rb \
+            -d #{%w[mysql postgresql sqlite3 etc...]}
+
+
+# Non Docker
 $ rails new #{project_name} \
             -m https://raw.githubusercontent.com/masayuki-0319/rails_template/master/rails_template.rb \
             -d #{%w[mysql postgresql sqlite3 etc...]}

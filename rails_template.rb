@@ -14,6 +14,9 @@
 # Setting helper methods
 REPO_BASE_URL = "https://raw.githubusercontent.com/masayuki-0319/rails_template/master/"
 
+# Use Docker?
+project_root = (app_name ==  "app" ? "." : app_name)
+
 def replace_myapp(file)
   gsub_file(file, /#{app_name}/, app_name, verbose: false)
 end
@@ -140,11 +143,11 @@ gem_group :test, :development do
     # Airbnb specific analysis for RuboCop (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
     gem "rubocop-airbnb", require: false
 
-    run "cat << EOF >> ./.rubocop_airbnb.yml
+    run "cat << EOF > #{project_root}/.rubocop_airbnb.yml
 require:
   - rubocop-airbnb
 EOF"
-    run "cat << EOF > ./.rubocop.yml
+    run "cat << EOF > #{project_root}/.rubocop.yml
 inherit_from:
   - .rubocop_airbnb.yml
 AllCops:
@@ -176,7 +179,7 @@ generate "rspec:install"
 
 run "rm -rf test"
 
-run "cat << EOF > ./.rspec
+run "cat << EOF > #{project_root}/.rspec
 --require spec_helper
 --format documentation
 EOF"
@@ -186,12 +189,15 @@ run "bundle exec spring binstub rspec"
 
 ## For enable ./spec/support
 uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
-run "cat << EOF > ./spec/support/factory_bot.rb
+run "mkdir #{project_root}/spec/support"
+
+run "cat << EOF > #{project_root}/spec/support/factory_bot.rb
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 EOF"
-run "cat << EOF > ./spec/support/database_rewinder.rb
+
+run "cat << EOF > #{project_root}/spec/support/database_rewinder.rb
 RSpec.configure do |config|
   config.before(:suite) do
     DatabaseRewinder.clean_all
