@@ -1,8 +1,6 @@
 # RefineryCMS 初期設定
 ## 概要
 
-Ruby on Rails で作られた [Open Source Software]([OSS](https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)) であり、 Content Mangement System([CMS](https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))と呼ばれるソフトウェアである。つまり、PHP で考えると Wordpress のように投稿記事(Content)を管理(Management)する目的で使用されるソフトウェア(Software)である。
-
 公式及びコミュニティにおいて、付属機能(extension)が開発されているため、デフォルトの機能に付け足して様々な機能を拡張することが可能であるが、Refinery のバージョンによって使用不可の機能があるため注意すること。
 
 - [公式 | Ruby on Rails CMS that supports Rails 6\.0\+ \- Refinery CMS](https://www.refinerycms.com/)
