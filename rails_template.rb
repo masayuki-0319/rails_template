@@ -54,15 +54,15 @@ gem "seed-fu"
 # Database settings
 case @builder.options.database
 when "mysql"
-  run "cat << EOF >> .env.dev
+  run "cat << TEXT >> .env.dev
 MYSQL_ROOT_PASSWORD=pass
-EOF"
+TEXT"
   get_remote('config/database.yml_mysql', 'config/database.yml')
 when "postgresql"
-  run "cat << EOF >> .env.dev
+  run "cat << TEXT >> .env.dev
 POSTGRES_USER=root
 POSTGRES_PASSWORD=pass
-EOF"
+TEXT"
   get_remote('config/database.yml_postgresql', 'config/database.yml')
 when "sqlite3"
 else
@@ -74,7 +74,7 @@ end
 
 # --------------------------
 # Base setting
-base_setting = <<-EOF
+base_setting = <<-TEXT
 config.time_zone = "Asia/Tokyo"
 config.active_record.default_timezone = :local
 I18n.enforce_available_locales = false
@@ -92,12 +92,12 @@ config.generators do |g|
                     request_specs: true
   g.fixture_replacement :factory_bot, dir: "spec/factories"
 end
-EOF
+TEXT
 environment base_setting
 
 # --------------------------
 # Bullet setting
-bullet_application_setting = <<-EOF
+bullet_application_setting = <<-TEXT
 config.after_initialize do
   Bullet.enable = true
   Bullet.alert = true
@@ -105,7 +105,7 @@ config.after_initialize do
   Bullet.console = true
   Bullet.rails_logger = true
 end
-EOF
+TEXT
 environment bullet_application_setting, env: "development"
 
 
@@ -118,9 +118,9 @@ when "slim"
   remove_file("app/views/layouts/application.html.erb")
   get_remote("app/views/layouts/application.html.slim")
 
-  slim_application_setting = <<-EOF
+  slim_application_setting = <<-TEXT
 config.generators.template_engine = :slim
-EOF
+TEXT
   environment slim_application_setting
 when "halm"
   # TODO: haml setting
@@ -143,11 +143,12 @@ gem_group :test, :development do
     # Airbnb specific analysis for RuboCop (https://github.com/airbnb/ruby/tree/master/rubocop-airbnb)
     gem "rubocop-airbnb", require: false
 
-    run "cat << EOF > #{project_root}/.rubocop_airbnb.yml
+    run "cat << TEXT > #{project_root}/.rubocop_airbnb.yml
 require:
   - rubocop-airbnb
-EOF"
-    run "cat << EOF > #{project_root}/.rubocop.yml
+TEXT"
+
+    run "cat << TEXT > #{project_root}/.rubocop.yml
 inherit_from:
   - .rubocop_airbnb.yml
 AllCops:
@@ -162,11 +163,30 @@ AllCops:
     - 'node_modules/**/*'
     - 'spec/**/*'
     - 'vendor/**/*'
-EOF"
+TEXT"
   when "onkcop"
-    # TODO: onkcop setting
     # Create by japanese programmer(https://github.com/onk/onkcop)
     gem "onkcop", require: false
+
+    run "cat << TEXT > #{project_root}/.rubocop.yml
+inherit_gem:
+  onkcop:
+    - 'config/rubocop.yml'
+    - 'config/rails.yml'
+    - 'config/rspec.yml'
+AllCops:
+#  TargetRubyVersion:
+#  TargetRailsVersion:
+
+  Exclude:
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'node_modules/**/*'
+    - 'spec/**/*'
+    - 'vendor/**/*'
+TEXT"
   when "none"
     puts "INFO: No setting rubocop."
   end
@@ -179,10 +199,10 @@ generate "rspec:install"
 
 run "rm -rf test"
 
-run "cat << EOF > #{project_root}/.rspec
+run "cat << TEXT > #{project_root}/.rspec
 --require spec_helper
 --format documentation
-EOF"
+TEXT"
 
 ## For enable fast run rspec.
 run "bundle exec spring binstub rspec"
@@ -191,13 +211,13 @@ run "bundle exec spring binstub rspec"
 uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
 run "mkdir #{project_root}/spec/support"
 
-run "cat << EOF > #{project_root}/spec/support/factory_bot.rb
+run "cat << TEXT > #{project_root}/spec/support/factory_bot.rb
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
-EOF"
+TEXT"
 
-run "cat << EOF > #{project_root}/spec/support/database_rewinder.rb
+run "cat << TEXT > #{project_root}/spec/support/database_rewinder.rb
 RSpec.configure do |config|
   config.before(:suite) do
     DatabaseRewinder.clean_all
@@ -209,13 +229,13 @@ RSpec.configure do |config|
     DatabaseRewinder.clean
   end
 end
-EOF"
+TEXT"
 
 
 # ==================================================
 # Use if add file to gitignore
-# run "cat << EOF >> .gitignore
-# EOF"
+# run "cat << TEXT >> .gitignore
+# TEXT"
 
 
 # ==========================
