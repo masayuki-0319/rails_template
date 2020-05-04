@@ -1,11 +1,8 @@
 # Description
 Rails template with Docker
 
-# Requirements
-## Local setting for using Ruby on Rails
-no descripiton
-
-## Want use Docker
+# How to use
+## Use Docker
 ### Install Docker
 - [Docker Desktop for Mac and Windows \| Docker](https://www.docker.com/products/docker-desktop)
 
@@ -13,8 +10,8 @@ no descripiton
 ```bash
 $ git clone https://github.com/masayuki-0319/rails_template.git
 
-$ mv rails_tamplate #{project_name}
-$ cd #{project_name}
+$ mv rails_tamplate $PROJECT_NAME
+$ cd $PROJECT_NAME
 
 $ ./docker/entrypoint_for_repo_clone.sh
 
@@ -22,22 +19,25 @@ $ docker-compose up -d
 $ docker-compose exec app ash
 ```
 
-# How to use
+### Generate Project
 
 ```bash
-# Use Docker
 $ rails new . \
             -m https://raw.githubusercontent.com/masayuki-0319/rails_template/master/rails_template.rb \
-            -d #{%w[mysql postgresql sqlite3 etc...]}
-
-
-# Non Docker
-$ rails new #{project_name} \
-            -m https://raw.githubusercontent.com/masayuki-0319/rails_template/master/rails_template.rb \
-            -d #{%w[mysql postgresql sqlite3 etc...]}
+            -d ("mysql" "postgresql" "etc...")
 ```
 
 - [参考: 小さく薄くrails newする\(ViewやJSが必要ない場合\) \- Qiita](https://qiita.com/shifumin/items/f4f4ea68d9963dbe9ca2)
+
+## Non Docker
+### Generate Project
+
+```bash
+# Non Docker
+$ rails new $PROJECT_NAME \
+            -m https://raw.githubusercontent.com/masayuki-0319/rails_template/master/rails_template.rb \
+            -d ("mysql" "postgresql" "etc...")
+```
 
 
 # Others
@@ -45,19 +45,16 @@ $ rails new #{project_name} \
 ```bash:bash
 # spec 生成コマンド（ e.g. user 関係の場合）
 $ rails g rspec:model user
-$ rails g rspec:job users
-$ rails g rspec:view users
-$ rails g rspec:helper users
-$ rails g rspec:system user_registration
 $ rails g rspec:request users
+$ rails g rspec:system user_registration
 ```
 
 ```bash:bash
-# 一部をテストする場合（ディレクトリ、describe を指定可能）
-$ bin/rspec spec/models/user_spec.rb:12
-
 # 全体をテストする場合
-$ bundle exec rspec
+$ rspec
+
+# 一部をテストする場合（ディレクトリ、describe を指定可能）
+$ rspec spec/models/user_spec.rb:12
 ```
 
 ## Want use OSS
@@ -65,7 +62,7 @@ $ bundle exec rspec
 一部 README と重複しているため、適宜読み替えて設定願います。
 
 - OSS repositories
-  - [RefineryCMS](https://github.com/refinery/)
+  - [RefineryCMS](https://github.com/refinery/refinerycms)
   - [AlchemyCMS](https://github.com/AlchemyCMS/alchemy_cms)
   - [SpinaCMS](https://github.com/SpinaCMS/Spina)
 
