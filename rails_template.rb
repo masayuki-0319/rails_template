@@ -11,12 +11,15 @@
 
 
 # ==========================
-# Setting helper methods
+# Setting helper
+
+## File source
 REPO_BASE_URL = "https://raw.githubusercontent.com/masayuki-0319/rails_template/master/"
 
-# Use Docker?
+## Use Docker?
 project_root = (app_name ==  "app" ? "." : app_name)
 
+## Helper methods
 def replace_myapp(file)
   gsub_file(file, /#{app_name}/, app_name, verbose: false)
 end
@@ -34,7 +37,7 @@ end
 # Gem settings
 
 # --------------------------
-## Debug & Test gems
+# Debug & Test gems
 gem_group :test, :development do
   gem "pry-rails"
   gem "pry-byebug"
@@ -64,8 +67,8 @@ POSTGRES_USER=root
 POSTGRES_PASSWORD=pass
 TEXT"
   get_remote('config/database.yml_postgresql', 'config/database.yml')
-when "sqlite3"
 else
+  puts "INFO: Use default database ( sqlite3 )."
 end
 
 
@@ -97,7 +100,7 @@ environment base_setting
 
 # --------------------------
 # Bullet setting
-bullet_application_setting = <<-TEXT
+bullet_setting = <<-TEXT
 config.after_initialize do
   Bullet.enable = true
   Bullet.alert = true
@@ -106,7 +109,7 @@ config.after_initialize do
   Bullet.rails_logger = true
 end
 TEXT
-environment bullet_application_setting, env: "development"
+environment bullet_setting, env: "development"
 
 
 # ==========================
@@ -132,6 +135,7 @@ end
 
 # ==========================
 # Test settings
+
 # --------------------------
 # Rubocop
 gem_group :test, :development do
@@ -192,31 +196,37 @@ TEXT"
   end
 end
 
-# # --------------------------
-# # RSpec
-run "bundle install -j4"
-generate "rspec:install"
+# --------------------------
+# RSpec
 
+## Setting rspec-rails
 run "rm -rf test"
+
+run "bundle install -j4"
+
+generate "rspec:install"
 
 run "cat << TEXT > #{project_root}/.rspec
 --require spec_helper
 --format documentation
 TEXT"
 
-## For enable fast run rspec.
+## Setting spring-commands-rspec
 run "bundle exec spring binstub rspec"
 
-## For enable ./spec/support
+## Enable ./spec/support directory
 uncomment_lines "spec/rails_helper.rb", /Dir\[Rails\.root\.join/
+
 run "mkdir #{project_root}/spec/support"
 
+## Setting factory_bot_rails
 run "cat << TEXT > #{project_root}/spec/support/factory_bot.rb
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 TEXT"
 
+## Setting database_rewinder
 run "cat << TEXT > #{project_root}/spec/support/database_rewinder.rb
 RSpec.configure do |config|
   config.before(:suite) do
@@ -233,7 +243,7 @@ TEXT"
 
 
 # ==================================================
-# Use if add file to gitignore
+# Uncomment if add file to gitignore
 # run "cat << TEXT >> .gitignore
 # TEXT"
 
